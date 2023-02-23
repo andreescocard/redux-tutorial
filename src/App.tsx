@@ -1,15 +1,20 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-function App({count, increment, incrementAmount}) {
+function App({ increment, incrementAmount}) {
+
+  const count = useSelector(state => state.counter.value) //redux hooks
+  const dispatch = useDispatch();
 
   function handleOnClick(){
-    increment();
+    //increment();
+    dispatch({ type: 'counter/increment' })
   }
   function handleClickAmount(){
-    incrementAmount(5);
+   // incrementAmount(5);
+   dispatch({ type: "counter/incrementAmount", payload: 5 })
   }
 
   return (
@@ -41,17 +46,20 @@ function App({count, increment, incrementAmount}) {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    count: state.counter.value
-  }
-}
+export default App;
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    increment: () => dispatch({ type: 'counter/increment' }),
-    incrementAmount: (amount) => dispatch({ type: "counter/incrementAmount", payload: amount })
-  }
-}
+//OLD SCHOOL
+// const mapStateToProps = (state) => {
+//   return {
+//     count: state.counter.value
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App) //HOC Connect - High Order Component
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     increment: () => dispatch({ type: 'counter/increment' }),
+//     incrementAmount: (amount) => dispatch({ type: "counter/incrementAmount", payload: amount })
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(App) //HOC Connect - High Order Component

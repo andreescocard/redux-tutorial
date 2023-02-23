@@ -3,8 +3,14 @@ import reactLogo from './assets/react.svg'
 import './App.css'
 import { connect } from 'react-redux'
 
-function App() {
-  const [count, setCount] = useState(0)
+function App({count, increment, incrementAmount}) {
+
+  function handleOnClick(){
+    increment();
+  }
+  function handleClickAmount(){
+    incrementAmount(5);
+  }
 
   return (
     <div className="App">
@@ -18,8 +24,11 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={handleOnClick}>
           count is {count}
+        </button>
+        <button onClick={handleClickAmount}>
+          Increment Amount
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
@@ -32,6 +41,17 @@ function App() {
   )
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    count: state.counter.value
+  }
+}
 
-export default connect()(App) //HOC Connect - High Order Component
+const mapDispatchToProps = (dispatch) => {
+  return {
+    increment: () => dispatch({ type: 'counter/increment' }),
+    incrementAmount: (amount) => dispatch({ type: "counter/incrementAmount", payload: amount })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App) //HOC Connect - High Order Component

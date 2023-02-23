@@ -8,11 +8,19 @@ const initialState = {
 
 function reducer(state = initialState, action){
     switch(action.type){
-        case "counter/incremented":{
+        case "counter/increment":{
             return {
                 ...state, //spread operator - copy state to counter
                 counter: {
                     value: state.counter.value + 1,
+                }
+            }
+        }
+        case "counter/incrementAmount": {
+            return {
+                ...state,
+                counter: {
+                    value: state.counter.value + action.payload,
                 }
             }
         }
@@ -23,4 +31,7 @@ function reducer(state = initialState, action){
     
 }
 
-export const store = createStore(reducer)
+export const store = createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
